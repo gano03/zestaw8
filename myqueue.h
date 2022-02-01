@@ -17,46 +17,51 @@ public:
         tab = new T[other.msize];
         head = other.head;
         tail = other.tail;
+        msize = other.msize;
         for(int i = 0; i < other.msize; i++){
             tab[i] = other.tab[i];
         }
     } // copy constructor
     MyQueue(MyQueue&& other)
     {
-        tab = new T[other.msize];
+        tab = other.tab;
         head = other.head;
         tail = other.tail;
+        msize = other.msize;
         other.head = 0;
         other.tail = 0;
-        for(int i = 0; i < other.msize; i++){
-            tab[i] = other.tab[i];
-            other.tab[i] = 0;
-        }
-        delete [] other.tab;
+        other.msize = 0;
+        other.tab = nullptr;
     } // move constructor
     MyQueue& operator=(const MyQueue& other)
     {
+        delete [] this->tab;
         tab = new T[other.msize];
-        head = other.head;
-        tail = other.tail;
+        this->head = 0;
+        this->tail = 0;
+        this->msize = 0;
+        this->head = other.head;
+        this->tail = other.tail;
+        this->msize = other.msize;
         for(int i = 0; i < other.msize; i++){
             tab[i] = other.tab[i];
         }
-        delete [] other.tab;
         return *this;
     } // copy assignment operator, return *this
     MyQueue& operator=(MyQueue&& other)
     {
-        tab = new T[other.msize];
-        head = other.head;
-        tail = other.tail;
+        delete [] this->tab;
+        this->head = 0;
+        this->tail = 0;
+        this->msize = 0;
+        this->tab = other.tab;
+        this->head = other.head;
+        this->tail = other.tail;
+        this->msize = other.msize;
+        other.tab = nullptr;
+        other.msize = 0;
         other.head = 0;
         other.tail = 0;
-        for(int i = 0; i < other.msize; i++){
-            tab[i] = other.tab[i];
-            other.tab[i] = 0;
-        }
-        delete [] other.tab;
         return *this;
     } // move assignment operator, return *this
     bool empty() const { return head == tail; }
